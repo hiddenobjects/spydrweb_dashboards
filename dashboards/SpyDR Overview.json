@@ -1,0 +1,1986 @@
+{
+  "__inputs": [
+    {
+      "name": "DS_SPYDR",
+      "label": "SpyDR",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "mysql",
+      "pluginName": "MySQL"
+    }
+  ],
+  "__elements": [],
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "8.4.5"
+    },
+    {
+      "type": "datasource",
+      "id": "mysql",
+      "name": "MySQL",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "piechart",
+      "name": "Pie chart",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "stat",
+      "name": "Stat",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "text",
+      "name": "Text",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "timeseries",
+      "name": "Time series",
+      "version": ""
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "iteration": 1653325040572,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "collapsed": false,
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_SPYDR}"
+      },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 11,
+      "panels": [],
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_SPYDR}"
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 2,
+        "x": 0,
+        "y": 1
+      },
+      "id": 29,
+      "options": {
+        "content": "<img src=\"https://static.wixstatic.com/media/134aa2_668f6b587f534c49b8202a24b300ea2a~mv2.png/v1/fill/w_146,h_115,al_c,usm_0.66_1.00_0.01,enc_auto/134aa2_668f6b587f534c49b8202a24b300ea2a~mv2.png\"/>",
+        "mode": "html"
+      },
+      "pluginVersion": "8.4.5",
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  ts AS \"time\",\n  arp_id\nFROM arp_cache\nWHERE\n  $__timeFilter(ts)\nORDER BY ts",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "arp_id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "arp_cache",
+          "timeColumn": "ts",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_SPYDR}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "dark-red",
+            "mode": "continuous-GrYlRd",
+            "seriesBy": "last"
+          },
+          "custom": {
+            "axisLabel": "Findings",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "points",
+            "fillOpacity": 18,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "smooth",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 4,
+            "pointSize": 8,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "always",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 21,
+        "x": 2,
+        "y": 1
+      },
+      "id": 17,
+      "options": {
+        "legend": {
+          "calcs": [
+            "sum"
+          ],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [
+            {
+              "params": [
+                "1d",
+                "none"
+              ],
+              "type": "time"
+            }
+          ],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  $__timeGroupAlias(finding_ts,1d),\n  count(finding) AS \"Findings\"\nFROM master\nWHERE\n  $__timeFilter(finding_ts) and category like $var_category and endpoint like $var_endpoint and rule like $var_rule and severity like $var_severity and finding like REPLACE($var_finding,'\\\\','\\\\\\\\')\nGROUP BY 1\nORDER BY $__timeGroup(finding_ts,1d)",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "finding"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "count"
+                ],
+                "type": "aggregate"
+              },
+              {
+                "params": [
+                  "Findings"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "table": "master",
+          "timeColumn": "finding_ts",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "",
+              "params": [
+                "1",
+                "=",
+                "1"
+              ],
+              "type": "expression"
+            }
+          ]
+        }
+      ],
+      "transparent": true,
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_SPYDR}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "dark-red",
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 2,
+        "x": 0,
+        "y": 6
+      },
+      "id": 7,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "value"
+      },
+      "pluginVersion": "8.4.5",
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [
+            {
+              "params": [
+                "severity"
+              ],
+              "type": "column"
+            }
+          ],
+          "metricColumn": "severity",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  finding_ts AS \"time\",\n  severity AS metric,\n  count(severity) AS \"Severity\"\nFROM master\nWHERE severity = \"High\" and $__timeFilter(finding_ts) and category like $var_category and endpoint like $var_endpoint and rule like $var_rule and finding like REPLACE($var_finding,'\\\\','\\\\\\\\')\nGROUP BY severity,2\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "finding_id"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "count"
+                ],
+                "type": "aggregate"
+              },
+              {
+                "params": [
+                  "Severity"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "table": "findings",
+          "timeColumn": "finding_ts",
+          "timeColumnType": "timestamp",
+          "where": []
+        }
+      ],
+      "title": "High",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_SPYDR}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "dark-orange",
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "semi-dark-orange",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 2,
+        "x": 2,
+        "y": 6
+      },
+      "id": 9,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "value"
+      },
+      "pluginVersion": "8.4.5",
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [
+            {
+              "params": [
+                "severity"
+              ],
+              "type": "column"
+            }
+          ],
+          "metricColumn": "severity",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  finding_ts AS \"time\",\n  severity AS metric,\n  count(severity) AS \"Severity\"\nFROM master\nWHERE severity = \"Medium\" and $__timeFilter(finding_ts) and category like $var_category and endpoint like $var_endpoint and rule like $var_rule and finding like REPLACE($var_finding,'\\\\','\\\\\\\\')\nGROUP BY severity,2\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "finding_id"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "count"
+                ],
+                "type": "aggregate"
+              },
+              {
+                "params": [
+                  "Severity"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "table": "findings",
+          "timeColumn": "finding_ts",
+          "timeColumnType": "timestamp",
+          "where": []
+        }
+      ],
+      "title": "Medium",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_SPYDR}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "light-green",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "light-yellow",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 2,
+        "x": 4,
+        "y": 6
+      },
+      "id": 8,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "value"
+      },
+      "pluginVersion": "8.4.5",
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [
+            {
+              "params": [
+                "severity"
+              ],
+              "type": "column"
+            }
+          ],
+          "metricColumn": "severity",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  finding_ts AS \"time\",\n  severity AS metric,\n  count(severity) AS \"Severity\"\nFROM master\nWHERE severity = \"Low\" and $__timeFilter(finding_ts) and category like $var_category and endpoint like $var_endpoint and rule like $var_rule and finding like REPLACE($var_finding,'\\\\','\\\\\\\\')\nGROUP BY severity,2\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "finding_id"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "count"
+                ],
+                "type": "aggregate"
+              },
+              {
+                "params": [
+                  "Severity"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "table": "findings",
+          "timeColumn": "finding_ts",
+          "timeColumnType": "timestamp",
+          "where": []
+        }
+      ],
+      "title": "Low",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_SPYDR}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "text",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 2,
+        "x": 6,
+        "y": 6
+      },
+      "id": 5,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.4.5",
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  finding_ts AS \"time\",\n  count(endpoint) AS \"Endpoint\"\nFROM master\nWHERE\n  $__timeFilter(finding_ts) and category like $var_category and endpoint like $var_endpoint and rule like $var_rule and severity like $var_severity and finding like REPLACE($var_finding,'\\\\','\\\\\\\\')",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "endpoint_id"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "count"
+                ],
+                "type": "aggregate"
+              },
+              {
+                "params": [
+                  "Endpoints"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "table": "findings",
+          "timeColumn": "ts",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Findings",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_SPYDR}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "dark-red",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 2,
+        "x": 8,
+        "y": 6
+      },
+      "id": 4,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.4.5",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  count(distinct(endpoint)) AS \"Endpoints\"\nFROM master\nWHERE $__timeFilter(finding_ts) and category like $var_category and endpoint like $var_endpoint and rule like $var_rule and severity like $var_severity and finding like REPLACE($var_finding,'\\\\','\\\\\\\\')",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "endpoint_id"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "count"
+                ],
+                "type": "aggregate"
+              },
+              {
+                "params": [
+                  "Endpoints"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "table": "uniq_endpoints_findings",
+          "timeColumn": "finding_ts",
+          "timeColumnType": "timestamp",
+          "where": []
+        }
+      ],
+      "title": "Affected Endpoints",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_SPYDR}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "text",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 2,
+        "x": 10,
+        "y": 6
+      },
+      "id": 25,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.4.5",
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "hide": false,
+          "metricColumn": "endpoint",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  ts AS \"time\",\n  endpoint AS metric,\n  count(endpoint_id) AS \"Endpoints\"\nFROM endpoint \nWHERE $__timeFilter(ts)\nORDER BY ts",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "endpoint_id"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "count"
+                ],
+                "type": "aggregate"
+              },
+              {
+                "params": [
+                  "Endpoints"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "table": "endpoint",
+          "timeColumn": "ts",
+          "timeColumnType": "timestamp",
+          "where": []
+        }
+      ],
+      "title": "All Endpoints",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_SPYDR}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "color-text",
+            "filterable": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "finding"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 649
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Finding"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 650
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Endpoints"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 99
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Findings"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 91
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Operating System"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 145
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Endpoint"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 106
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 2,
+        "x": 12,
+        "y": 6
+      },
+      "id": 26,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Findings"
+          }
+        ]
+      },
+      "pluginVersion": "8.4.5",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_SPYDR}"
+          },
+          "format": "table",
+          "group": [
+            {
+              "params": [
+                "finding"
+              ],
+              "type": "column"
+            }
+          ],
+          "metricColumn": "finding",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  endpoint AS \"Endpoint\",\n  count(finding) as \"Findings\"\nFROM master\nWHERE $__timeFilter(finding_ts) and category like $var_category and endpoint like $var_endpoint and rule like $var_rule and severity like $var_severity and finding like REPLACE($var_finding,'\\\\','\\\\\\\\')\nGROUP BY endpoint\nORDER BY Findings desc\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "finding"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "count"
+                ],
+                "type": "aggregate"
+              },
+              {
+                "params": [
+                  "Finding"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "table": "master",
+          "timeColumn": "finding_ts",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Endpoints",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_SPYDR}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "color-text",
+            "filterable": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "finding"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 649
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Finding"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 650
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Operating System"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 233
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Findings"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 95
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Endpoints"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 73
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 3,
+        "x": 14,
+        "y": 6
+      },
+      "id": 30,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "8.4.5",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_SPYDR}"
+          },
+          "format": "table",
+          "group": [
+            {
+              "params": [
+                "finding"
+              ],
+              "type": "column"
+            }
+          ],
+          "metricColumn": "finding",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  os_version AS \"Operating System\",\n  count(distinct endpoint) as \"Endpoints\"\nFROM master\nWHERE $__timeFilter(finding_ts) and category like $var_category and endpoint like $var_endpoint and rule like $var_rule and severity like $var_severity and finding like REPLACE($var_finding,'\\\\','\\\\\\\\')\ngroup by os_version\nORDER BY Endpoints desc\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "finding"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "count"
+                ],
+                "type": "aggregate"
+              },
+              {
+                "params": [
+                  "Finding"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "table": "master",
+          "timeColumn": "finding_ts",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Operating System",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_SPYDR}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "color-text",
+            "filterable": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "finding"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 649
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Finding"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 498
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Findings"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 102
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 6,
+        "x": 17,
+        "y": 6
+      },
+      "id": 27,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Findings"
+          }
+        ]
+      },
+      "pluginVersion": "8.4.5",
+      "targets": [
+        {
+          "format": "table",
+          "group": [
+            {
+              "params": [
+                "finding"
+              ],
+              "type": "column"
+            }
+          ],
+          "metricColumn": "finding",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  finding as Finding,\n  count(finding) as \"Findings\"\nfrom master\nWHERE $__timeFilter(finding_ts) and category like $var_category and endpoint like $var_endpoint and rule like $var_rule and severity like $var_severity and finding like REPLACE($var_finding,'\\\\','\\\\\\\\')\ngroup by finding\norder by Findings desc\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "finding"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "count"
+                ],
+                "type": "aggregate"
+              },
+              {
+                "params": [
+                  "Finding"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "table": "master",
+          "timeColumn": "finding_ts",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Findings",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_SPYDR}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 5,
+        "x": 0,
+        "y": 9
+      },
+      "id": 24,
+      "options": {
+        "displayLabels": [],
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "values": [
+            "value"
+          ]
+        },
+        "pieType": "donut",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [
+            {
+              "params": [
+                "category"
+              ],
+              "type": "column"
+            }
+          ],
+          "metricColumn": "category",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  finding_ts AS \"time\",\n  category AS metric,\n  count(category) AS \"category\"\nFROM master\nWHERE\n  $__timeFilter(finding_ts) and category like $var_category and endpoint like $var_endpoint and rule like $var_rule and severity like $var_severity and finding like REPLACE($var_finding,'\\\\','\\\\\\\\')\nGROUP BY category,2\nORDER BY finding_ts",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "category"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "count"
+                ],
+                "type": "aggregate"
+              },
+              {
+                "params": [
+                  "category"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "table": "master",
+          "timeColumn": "finding_ts",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Categories",
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_SPYDR}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": [
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "16-LettersUpperAndLowercase",
+                  "7-AlphanumericMixed",
+                  "An attempt was made to change an account's password",
+                  "Autoruns-Machine",
+                  "Cmd-AVdisable",
+                  "Cmd-EncodedCommand",
+                  "Cmd-HostAppl",
+                  "Cmd-RunDLL32",
+                  "Code-Network+Communication",
+                  "Image-Path",
+                  "MainConfig:SendAlertPSv2",
+                  "MainConfig:SendRuntimeExceptionWarning",
+                  "PSv2Mode",
+                  "PublicProf-mixed",
+                  "RandomGeneratedWording",
+                  "Services:16-LettersUpperAndLowercase",
+                  "Services:7-AlphanumericMixed",
+                  "Services:Image-Path",
+                  "Services:RandomGeneratedWording",
+                  "Services:SvcName-Poke+mixed",
+                  "SvcName-Poke+mixed",
+                  "TaskAction-TempFolder",
+                  "TaskNames-Poke",
+                  "The audit log was cleared v2",
+                  "WinTemp-Poke+AllPS+others"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": true
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 7,
+        "x": 5,
+        "y": 9
+      },
+      "id": 21,
+      "options": {
+        "displayLabels": [],
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "values": [
+            "value"
+          ]
+        },
+        "pieType": "donut",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [
+            {
+              "params": [
+                "rule"
+              ],
+              "type": "column"
+            }
+          ],
+          "metricColumn": "rule",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  finding_ts AS \"time\",\n  rule AS metric,\n  count(rule) AS \"Rule\"\nFROM master\nWHERE\n  $__timeFilter(finding_ts) and category like $var_category and endpoint like $var_endpoint and rule like $var_rule and severity like $var_severity and finding like REPLACE($var_finding,'\\\\','\\\\\\\\')\nGROUP BY rule,2\nORDER BY finding_ts",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "rule"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "count"
+                ],
+                "type": "aggregate"
+              },
+              {
+                "params": [
+                  "Rule"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "table": "master",
+          "timeColumn": "finding_ts",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Rules",
+      "type": "piechart"
+    },
+    {
+      "collapsed": false,
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_SPYDR}"
+      },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 16
+      },
+      "id": 19,
+      "panels": [],
+      "title": "Details",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_SPYDR}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "color-text",
+            "filterable": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Details"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 890
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Finding"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 525
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Endpoint"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 135
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Category"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 202
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Rule"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 249
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Severity"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 122
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 15,
+        "w": 23,
+        "x": 0,
+        "y": 17
+      },
+      "id": 23,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Timestamp"
+          }
+        ]
+      },
+      "pluginVersion": "8.4.5",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_SPYDR}"
+          },
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  endpoint AS \"Endpoint\",\n  finding AS \"Finding\",\n  details AS \"Details\",\n  category AS \"Category\",\n  rule AS \"Rule\",\n  severity AS \"Severity\",\n  os_version AS \"OS\",\n  finding_ts AS \"Timestamp\"\nFROM master\nWHERE $__timeFilter(finding_ts) and category like $var_category and endpoint like $var_endpoint and rule like $var_rule and severity like $var_severity and finding like REPLACE($var_finding,'\\\\','\\\\\\\\')\nORDER BY finding_ts DESC",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "endpoint"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "Endpoint"
+                ],
+                "type": "alias"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "finding"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "Finding"
+                ],
+                "type": "alias"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "category"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "Category"
+                ],
+                "type": "alias"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "rule"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "Rule"
+                ],
+                "type": "alias"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "severity"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "Severity"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "table": "master",
+          "timeColumn": "finding_ts",
+          "timeColumnType": "timestamp",
+          "where": []
+        }
+      ],
+      "title": "Overview",
+      "type": "table"
+    }
+  ],
+  "refresh": "",
+  "schemaVersion": 35,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "allValue": "'%'",
+        "current": {},
+        "datasource": {
+          "type": "mysql",
+          "uid": "${DS_SPYDR}"
+        },
+        "definition": "select distinct(endpoint) from master;",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Endpoint",
+        "multi": false,
+        "name": "var_endpoint",
+        "options": [],
+        "query": "select distinct(endpoint) from master;",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": "'%'",
+        "current": {},
+        "datasource": {
+          "type": "mysql",
+          "uid": "${DS_SPYDR}"
+        },
+        "definition": "select distinct(category) from master;",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Category",
+        "multi": false,
+        "name": "var_category",
+        "options": [],
+        "query": "select distinct(category) from master;",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": "'%'",
+        "current": {},
+        "datasource": {
+          "type": "mysql",
+          "uid": "${DS_SPYDR}"
+        },
+        "definition": "select distinct(rule) from master;",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Rule",
+        "multi": false,
+        "name": "var_rule",
+        "options": [],
+        "query": "select distinct(rule) from master;",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": "'%'",
+        "current": {},
+        "datasource": {
+          "type": "mysql",
+          "uid": "${DS_SPYDR}"
+        },
+        "definition": "select distinct(severity) from master;",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Severity",
+        "multi": false,
+        "name": "var_severity",
+        "options": [],
+        "query": "select distinct(severity) from master;",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": "'%'",
+        "current": {},
+        "datasource": {
+          "type": "mysql",
+          "uid": "${DS_SPYDR}"
+        },
+        "definition": "select distinct(REPLACE(finding, '\\\\', '\\\\\\\\')) from master;",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Finding",
+        "multi": false,
+        "name": "var_finding",
+        "options": [],
+        "query": "select distinct(REPLACE(finding, '\\\\', '\\\\\\\\')) from master;",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-15y",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "SpyDR Overview",
+  "uid": "1hUn-xRgk",
+  "version": 2,
+  "weekStart": ""
+}

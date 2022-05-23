@@ -1,0 +1,1270 @@
+{
+  "__inputs": [
+    {
+      "name": "DS_SPYDR",
+      "label": "SpyDR",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "mysql",
+      "pluginName": "MySQL"
+    }
+  ],
+  "__elements": [],
+  "__requires": [
+    {
+      "type": "panel",
+      "id": "barchart",
+      "name": "Bar chart",
+      "version": ""
+    },
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "8.4.5"
+    },
+    {
+      "type": "datasource",
+      "id": "mysql",
+      "name": "MySQL",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "stat",
+      "name": "Stat",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "iteration": 1653325228625,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 0,
+        "y": 0
+      },
+      "id": 5,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.4.5",
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [
+            {
+              "params": [
+                "$__interval",
+                "none"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "jar_file"
+              ],
+              "type": "column"
+            }
+          ],
+          "metricColumn": "jar_file",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  finding_ts AS \"time\",\n  path as \"path\",\n  jar_file AS metric,\n  count(jar_file) AS \"Jar Files\"\nFROM log4j_master\n  WHERE\n  $__timeFilter(finding_ts) and endpoint like $var_endpoint and jar_file REGEXP \"core(.*?)[^1.]2(?!\\.1[5-9]\\.)\"\nGROUP BY \"Jar Files\"",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "jar_file"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "count"
+                ],
+                "type": "aggregate"
+              },
+              {
+                "params": [
+                  "jar_file"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "table": "log4j_master",
+          "timeColumn": "finding_ts",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Critical Findings",
+      "type": "stat"
+    },
+    {
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 4,
+        "y": 0
+      },
+      "id": 8,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.4.5",
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [
+            {
+              "params": [
+                "$__interval",
+                "none"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "jar_file"
+              ],
+              "type": "column"
+            }
+          ],
+          "metricColumn": "jar_file",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  finding_ts AS \"time\",\n  jar_file AS metric,\n  count(jar_file) AS \"Jar Files\"\nFROM log4j_master\n  WHERE\n  $__timeFilter(finding_ts) and endpoint like $var_endpoint and jar_file REGEXP \"core.*?[^1.]2\\.1[56]\"\nGROUP BY \"Jar Files\"",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "jar_file"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "count"
+                ],
+                "type": "aggregate"
+              },
+              {
+                "params": [
+                  "jar_file"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "table": "log4j_master",
+          "timeColumn": "finding_ts",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Medium Findings (V2.1[56])",
+      "type": "stat"
+    },
+    {
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 8,
+        "y": 0
+      },
+      "id": 9,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.4.5",
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [
+            {
+              "params": [
+                "$__interval",
+                "none"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "jar_file"
+              ],
+              "type": "column"
+            }
+          ],
+          "metricColumn": "jar_file",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  finding_ts AS \"time\",\n  jar_file AS metric,\n  count(jar_file) AS \"Jar Files\"\nFROM log4j_master\n  WHERE\n  $__timeFilter(finding_ts) and endpoint like $var_endpoint and jar_file REGEXP \"core.*?[^1\\.]2\\.[1-2]{1}[7-9]{1}\"\nGROUP BY \"Jar Files\"",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "jar_file"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "count"
+                ],
+                "type": "aggregate"
+              },
+              {
+                "params": [
+                  "jar_file"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "table": "log4j_master",
+          "timeColumn": "finding_ts",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Patched Findings (V2.17)",
+      "type": "stat"
+    },
+    {
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 12,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.4.5",
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [
+            {
+              "params": [
+                "$__interval",
+                "none"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "jar_file"
+              ],
+              "type": "column"
+            }
+          ],
+          "metricColumn": "jar_file",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  finding_ts AS \"time\",\n  jar_file AS metric,\n  count(jar_file) AS \"Jar Files\"\nFROM log4j_master\n  WHERE\n  $__timeFilter(finding_ts) and endpoint like $var_endpoint and jar_file like $var_log4j_version and jar_file like \"%core%\"\nGROUP BY \"Jar Files\"",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "jar_file"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "count"
+                ],
+                "type": "aggregate"
+              },
+              {
+                "params": [
+                  "jar_file"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "table": "log4j_master",
+          "timeColumn": "finding_ts",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Scope (log4j-core)",
+      "type": "stat"
+    },
+    {
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "text",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 18,
+        "y": 0
+      },
+      "id": 11,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.4.5",
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [
+            {
+              "params": [
+                "$__interval",
+                "none"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "jar_file"
+              ],
+              "type": "column"
+            }
+          ],
+          "metricColumn": "jar_file",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  finding_ts AS \"time\",\n  jar_file AS metric,\n  count(jar_file) AS \"Jar Files\"\nFROM log4j_master\n  WHERE\n  $__timeFilter(finding_ts) and endpoint like $var_endpoint\nGROUP BY \"Jar Files\"",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "jar_file"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "count"
+                ],
+                "type": "aggregate"
+              },
+              {
+                "params": [
+                  "jar_file"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "table": "log4j_master",
+          "timeColumn": "finding_ts",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "All Log4J Jar Files",
+      "type": "stat"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "color-text",
+            "filterable": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Endpoint"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 138
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Log4J Version"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 159
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Location"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 737
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 0,
+        "y": 4
+      },
+      "id": 6,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "8.4.5",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  endpoint as Endpoint,\n  jar_file as \"Log4J Version\",\n  path as \"Location\",\n  finding_ts AS \"Timestamp\"\nFROM log4j_master\nWHERE $__timeFilter(finding_ts) AND endpoint LIKE $var_endpoint and jar_file REGEXP ${var_log4j_level:value}\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "arp_id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "arp_cache",
+          "timeColumn": "ts",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Findings Overview:  $var_log4j_level",
+      "type": "table"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "color-text",
+            "filterable": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Location"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 612
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Endpoint"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 147
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 24,
+        "w": 12,
+        "x": 12,
+        "y": 4
+      },
+      "id": 4,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Endpoint"
+          }
+        ]
+      },
+      "pluginVersion": "8.4.5",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  endpoint as Endpoint,\n  jar_file as \"Log4J Version\",\n  path as \"Location\",\n  finding_ts AS \"Timestamp\"\nFROM log4j_master\nWHERE $__timeFilter(finding_ts) AND endpoint LIKE $var_endpoint AND jar_file LIKE $var_log4j_version\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "arp_id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "arp_cache",
+          "timeColumn": "ts",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "All Log4J Jar Files",
+      "type": "table"
+    },
+    {
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 0,
+        "y": 14
+      },
+      "id": 12,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.4.5",
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [
+            {
+              "params": [
+                "$__interval",
+                "none"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "jar_file"
+              ],
+              "type": "column"
+            }
+          ],
+          "metricColumn": "jar_file",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  finding_ts AS \"time\",\n  jar_file AS metric,\n  count(jar_file) AS \"Jar Files\"\nFROM log4j_master\n  WHERE\n  $__timeFilter(finding_ts) and endpoint like $var_endpoint and jar_file REGEXP \"^((?!(1|2)).)*$\"\nGROUP BY \"Jar Files\"",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "jar_file"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "count"
+                ],
+                "type": "aggregate"
+              },
+              {
+                "params": [
+                  "jar_file"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "table": "log4j_master",
+          "timeColumn": "finding_ts",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Unknown Findings",
+      "type": "stat"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisSoftMin": 0,
+            "fillOpacity": 80,
+            "gradientMode": "hue",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 0,
+            "scaleDistribution": {
+              "type": "linear"
+            }
+          },
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "#EAB839",
+                "value": 5
+              },
+              {
+                "color": "light-orange",
+                "value": 15
+              },
+              {
+                "color": "#EF843C",
+                "value": 25
+              },
+              {
+                "color": "#E24D42",
+                "value": 35
+              },
+              {
+                "color": "dark-red",
+                "value": 45
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 14,
+        "w": 8,
+        "x": 4,
+        "y": 14
+      },
+      "id": 7,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.39,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "orientation": "horizontal",
+        "showValue": "always",
+        "stacking": "none",
+        "text": {
+          "valueSize": 15
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "8.2.3",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  jar_file as \"Version\",\n  count(jar_file) as \"Findings\"\nFROM log4j_master\nWHERE $__timeFilter(finding_ts) AND endpoint LIKE $var_endpoint AND jar_file LIKE $var_log4j_version and jar_file REGEXP $var_log4j_level and jar_file like \"%core%\"\nGROUP BY jar_file order by Findings desc limit 25\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "arp_id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "arp_cache",
+          "timeColumn": "ts",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Core Version Overview: $var_log4j_level",
+      "type": "barchart"
+    },
+    {
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "text",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 0,
+        "y": 18
+      },
+      "id": 13,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.4.5",
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [
+            {
+              "params": [
+                "$__interval",
+                "none"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "jar_file"
+              ],
+              "type": "column"
+            }
+          ],
+          "metricColumn": "jar_file",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  finding_ts AS \"time\",\n  jar_file AS metric,\n  count(jar_file) AS \"Jar Files\"\nFROM log4j_master\n  WHERE\n  $__timeFilter(finding_ts) and endpoint like $var_endpoint and jar_file REGEXP \"[^2.]1\\.[0-9]{1}[0-9]?\"\nGROUP BY \"Jar Files\"",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "jar_file"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "count"
+                ],
+                "type": "aggregate"
+              },
+              {
+                "params": [
+                  "jar_file"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "table": "log4j_master",
+          "timeColumn": "finding_ts",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Outdated Findings (V1.X)",
+      "type": "stat"
+    }
+  ],
+  "schemaVersion": 35,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "allValue": "'%'",
+        "current": {},
+        "datasource": {
+          "type": "mysql",
+          "uid": "${DS_SPYDR}"
+        },
+        "definition": "select distinct(endpoint) from log4j_master;",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Endpoint",
+        "multi": false,
+        "name": "var_endpoint",
+        "options": [],
+        "query": "select distinct(endpoint) from log4j_master;",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": "'%'",
+        "current": {},
+        "datasource": {
+          "type": "mysql",
+          "uid": "${DS_SPYDR}"
+        },
+        "definition": "select distinct(jar_file) from log4j_master where jar_file like \"%core%\";",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Log4J Version",
+        "multi": false,
+        "name": "var_log4j_version",
+        "options": [],
+        "query": "select distinct(jar_file) from log4j_master where jar_file like \"%core%\";",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": "Critical:\"j-?_?[2]{1}\\.?(0|1){1}[0-5]?(\\.|[\\s])\"",
+        "current": {
+          "selected": false,
+          "text": "Critical",
+          "value": "\"core(.*?)[^1.]2(?!\\.1[5-9]\\.)\""
+        },
+        "hide": 0,
+        "includeAll": false,
+        "label": "Log4J Level",
+        "multi": false,
+        "name": "var_log4j_level",
+        "options": [
+          {
+            "selected": true,
+            "text": "Critical",
+            "value": "\"core(.*?)[^1.]2(?!\\.1[5-9]\\.)\""
+          },
+          {
+            "selected": false,
+            "text": "Medium",
+            "value": "\"core.*?[^1.]2\\.1[56]\""
+          },
+          {
+            "selected": false,
+            "text": "Patched",
+            "value": "\"core.*?[^1\\.]2\\.[1-2]{1}[7-9]{1}\""
+          },
+          {
+            "selected": false,
+            "text": "Outdated",
+            "value": "\"[^2.]1\\.[0-9]{1}[0-9]?\""
+          },
+          {
+            "selected": false,
+            "text": "Unknown",
+            "value": "\"^((?!(1|2)).)*$\""
+          }
+        ],
+        "query": "Critical : \"core(.*?)[^1.]2(?!\\.1[5-9]\\.)\" , Medium : \"core.*?[^1.]2\\.1[56]\", Patched : \"core.*?[^1\\.]2\\.[1-2]{1}[7-9]{1}\", Outdated : \"[^2.]1\\.[0-9]{1}[0-9]?\", Unknown : \"^((?!(1|2)).)*$\"",
+        "queryValue": "",
+        "skipUrlSync": false,
+        "type": "custom"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-25y",
+    "to": "now+24h"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Log4J Overview",
+  "uid": "s0zdThmgk",
+  "version": 2,
+  "weekStart": ""
+}

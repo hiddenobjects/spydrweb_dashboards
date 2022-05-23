@@ -1,0 +1,1428 @@
+{
+  "__inputs": [
+    {
+      "name": "DS_SPYDR",
+      "label": "SpyDR",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "mysql",
+      "pluginName": "MySQL"
+    }
+  ],
+  "__elements": [],
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "8.4.5"
+    },
+    {
+      "type": "datasource",
+      "id": "mysql",
+      "name": "MySQL",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "piechart",
+      "name": "Pie chart",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "stat",
+      "name": "Stat",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "timeseries",
+      "name": "Time series",
+      "version": ""
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "iteration": 1653324460833,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "dark-red",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisLabel": "Endpoints",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "points",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 9,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 22,
+        "x": 0,
+        "y": 0
+      },
+      "id": 6,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "hidden",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_SPYDR}"
+          },
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  os_boottime AS \"time\",\n  SUBSTRING(os_boottime,1,11) as day,\n  count(endpoint_id) as \"Endpoints booted\"\nFROM endpoint\nWHERE\n  $__timeFilter(os_boottime) and endpoint like $var_endpoint and os_version like $var_os_version and ps_version like $var_ps_version and computer_role like $var_computer_role and coalesce(ad_site, \"None\") like $var_ad_site and coalesce(ad_dc, \"None\") like $var_ad_dc and coalesce(ad_domain, \"None\") like $var_ad_domain and coalesce(ipsubnet, \"None\") like $var_ipsubnet\nGROUP by day\nORDER BY os_boottime",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "finding_id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "findings",
+          "timeColumn": "ts",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Booting timeline",
+      "transparent": true,
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_SPYDR}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 2,
+        "x": 22,
+        "y": 0
+      },
+      "id": 4,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.4.5",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_SPYDR}"
+          },
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  ts AS \"time\",\n  endpoint AS metric,\n  count(endpoint_id) AS \"Endpoints\"\nFROM endpoint \nWHERE $__timeFilter(ts)\nORDER BY ts",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "finding_id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "findings",
+          "timeColumn": "ts",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Endpoints",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "color-text",
+            "filterable": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "PS Version"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 89
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": ".Net Version"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 100
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "IP Address"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 111
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "OS Language"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 106
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Architecture"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 112
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Timezone Offset UTC"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 134
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "AD Site"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 100
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Domain Controller"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 153
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Domain"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 144
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Operation System"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 352
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "UTC Offset"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 94
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 13,
+        "w": 24,
+        "x": 0,
+        "y": 4
+      },
+      "id": 2,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "8.4.5",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_SPYDR}"
+          },
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  created_at as \"First Seen\",\n  ts as \"Last Seen\",\n  os_boottime as \"Last Boot\",\n  endpoint as \"Endpoint\",\n  ps_version as \"PS Version\",\n  dotnet_version as \".Net Version\",\n  os_version as \"Operation System\",\n  ipv4 as \"IP Address\",\n  ipsubnet as \"Subnet\",\n  os_language as \"OS Language\",\n  os_architecture as \"Architecture\",\n  timezone as \"UTC Offset\",\n  coalesce(ad_site, \"None\") as \"AD Site\",\n  coalesce(ad_dc, \"None\") as \"Domain Controller\",\n  coalesce(ad_domain, \"None\") as \"Domain\",\n  computer_role as \"Role\"\nfrom endpoint\nWHERE $__timeFilter(os_boottime) and endpoint like $var_endpoint and os_version like $var_os_version and ps_version like $var_ps_version and computer_role like $var_computer_role and coalesce(ad_site, \"None\") like $var_ad_site and coalesce(ad_dc, \"None\") like $var_ad_dc and coalesce(ad_domain, \"None\") like $var_ad_domain and coalesce(ipsubnet, \"None\") like $var_ipsubnet;",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "finding_id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "endpoint",
+          "timeColumn": "ts",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Endpoint Overview",
+      "type": "table"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 4,
+        "x": 0,
+        "y": 17
+      },
+      "id": 8,
+      "options": {
+        "displayLabels": [],
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "values": [
+            "value"
+          ]
+        },
+        "pieType": "donut",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_SPYDR}"
+          },
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  os_boottime AS \"time\",\n  os_architecture AS metric,\n  count(os_architecture) as Architecture\nFROM endpoint\nWHERE\n  $__timeFilter(os_boottime) and endpoint like $var_endpoint and os_version like $var_os_version and ps_version like $var_ps_version and computer_role like $var_computer_role and coalesce(ad_site, \"None\") like $var_ad_site and coalesce(ad_dc, \"None\") like $var_ad_dc and coalesce(ad_domain, \"None\") like $var_ad_domain and coalesce(ipsubnet, \"None\") like $var_ipsubnet\nGROUP BY os_architecture\nORDER BY os_boottime",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "computer_role"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "endpoint",
+          "timeColumn": "ts",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Architecture",
+      "type": "piechart"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 4,
+        "x": 4,
+        "y": 17
+      },
+      "id": 13,
+      "options": {
+        "displayLabels": [],
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "values": [
+            "value"
+          ]
+        },
+        "pieType": "donut",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_SPYDR}"
+          },
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  os_boottime AS \"time\",\n  coalesce(ps_version, \"None\") AS metric,\n  count(ps_version) as \"PowerShell Version\"\nFROM endpoint\nWHERE\n    $__timeFilter(os_boottime) and endpoint like $var_endpoint and os_version like $var_os_version and ps_version like $var_ps_version and computer_role like $var_computer_role and coalesce(ad_site, \"None\") like $var_ad_site and coalesce(ad_dc, \"None\") like $var_ad_dc and coalesce(ad_domain, \"None\") like $var_ad_domain and coalesce(ipsubnet, \"None\") like $var_ipsubnet\nGROUP BY ps_version\nORDER BY os_boottime",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "computer_role"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "endpoint",
+          "timeColumn": "ts",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "PowerShell Version",
+      "type": "piechart"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 7,
+        "x": 8,
+        "y": 17
+      },
+      "id": 9,
+      "options": {
+        "displayLabels": [],
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "values": [
+            "value"
+          ]
+        },
+        "pieType": "donut",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_SPYDR}"
+          },
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  os_boottime AS \"time\",\n  os_version AS metric,\n  count(os_version) as \"Operation System\"\nFROM endpoint\nWHERE\n    $__timeFilter(os_boottime) and endpoint like $var_endpoint and os_version like $var_os_version and ps_version like $var_ps_version and computer_role like $var_computer_role and coalesce(ad_site, \"None\") like $var_ad_site and coalesce(ad_dc, \"None\") like $var_ad_dc and coalesce(ad_domain, \"None\") like $var_ad_domain and coalesce(ipsubnet, \"None\") like $var_ipsubnet\nGROUP BY os_version\nORDER BY os_boottime",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "computer_role"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "endpoint",
+          "timeColumn": "ts",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Operating Systems",
+      "type": "piechart"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 5,
+        "x": 15,
+        "y": 17
+      },
+      "id": 11,
+      "options": {
+        "displayLabels": [],
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "values": [
+            "value"
+          ]
+        },
+        "pieType": "donut",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_SPYDR}"
+          },
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  os_boottime AS \"time\",\n  coalesce(ad_domain, \"None\") AS metric,\n  count(coalesce(ad_domain, \"None\")) as \"AD Domain\"\nFROM endpoint\nWHERE\n    $__timeFilter(os_boottime) and endpoint like $var_endpoint and os_version like $var_os_version and ps_version like $var_ps_version and computer_role like $var_computer_role and coalesce(ad_site, \"None\") like $var_ad_site and coalesce(ad_dc, \"None\") like $var_ad_dc and coalesce(ad_domain, \"None\") like $var_ad_domain and coalesce(ipsubnet, \"None\") like $var_ipsubnet\nGROUP BY ad_domain\nORDER BY os_boottime",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "computer_role"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "endpoint",
+          "timeColumn": "ts",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "AD Domain",
+      "type": "piechart"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 4,
+        "x": 20,
+        "y": 17
+      },
+      "id": 18,
+      "options": {
+        "displayLabels": [],
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "values": [
+            "value"
+          ]
+        },
+        "pieType": "donut",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_SPYDR}"
+          },
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  os_boottime AS \"time\",\n  coalesce(ipsubnet, \"None\") AS metric,\n  count(coalesce(ipsubnet, \"None\")) as \"IP Subnet\"\nFROM endpoint\nWHERE\n    $__timeFilter(os_boottime) and endpoint like $var_endpoint and os_version like $var_os_version and ps_version like $var_ps_version and computer_role like $var_computer_role and coalesce(ad_site, \"None\") like $var_ad_site and coalesce(ad_dc, \"None\") like $var_ad_dc and coalesce(ad_domain, \"None\") like $var_ad_domain and coalesce(ipsubnet, \"None\") like $var_ipsubnet\nGROUP BY ipsubnet\nORDER BY os_boottime",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "computer_role"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "endpoint",
+          "timeColumn": "ts",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Subnet",
+      "type": "piechart"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 4,
+        "x": 0,
+        "y": 24
+      },
+      "id": 14,
+      "options": {
+        "displayLabels": [],
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "values": [
+            "value"
+          ]
+        },
+        "pieType": "donut",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_SPYDR}"
+          },
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  os_boottime AS \"time\",\n  coalesce(dotnet_version, \"None\") AS metric,\n  count(dotnet_version) as \".Net Version\"\nFROM endpoint\nWHERE\n    $__timeFilter(os_boottime) and endpoint like $var_endpoint and os_version like $var_os_version and ps_version like $var_ps_version and computer_role like $var_computer_role and coalesce(ad_site, \"None\") like $var_ad_site and coalesce(ad_dc, \"None\") like $var_ad_dc and coalesce(ad_domain, \"None\") like $var_ad_domain and coalesce(ipsubnet, \"None\") like $var_ipsubnet\nGROUP BY dotnet_version\nORDER BY os_boottime",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "computer_role"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "endpoint",
+          "timeColumn": "ts",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": ".Net Version",
+      "type": "piechart"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 4,
+        "x": 4,
+        "y": 24
+      },
+      "id": 10,
+      "options": {
+        "displayLabels": [],
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "values": [
+            "value"
+          ]
+        },
+        "pieType": "donut",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_SPYDR}"
+          },
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  os_boottime AS \"time\",\n  coalesce(ad_site, \"None\") AS metric,\n  count(coalesce(ad_site, \"None\")) as \"AD Site\"\nFROM endpoint\nWHERE\n    $__timeFilter(os_boottime) and endpoint like $var_endpoint and os_version like $var_os_version and ps_version like $var_ps_version and computer_role like $var_computer_role and coalesce(ad_site, \"None\") like $var_ad_site and coalesce(ad_dc, \"None\") like $var_ad_dc and coalesce(ad_domain, \"None\") like $var_ad_domain and coalesce(ipsubnet, \"None\") like $var_ipsubnet\nGROUP BY ad_site\nORDER BY os_boottime",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "computer_role"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "endpoint",
+          "timeColumn": "ts",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "AD Site",
+      "type": "piechart"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 7,
+        "x": 8,
+        "y": 24
+      },
+      "id": 12,
+      "options": {
+        "displayLabels": [],
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "values": [
+            "value"
+          ]
+        },
+        "pieType": "donut",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_SPYDR}"
+          },
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  os_boottime AS \"time\",\n  coalesce(computer_role, \"None\") AS metric,\n  count(computer_role) as \"Endpoint Role\"\nFROM endpoint\nWHERE\n    $__timeFilter(os_boottime) and endpoint like $var_endpoint and os_version like $var_os_version and ps_version like $var_ps_version and computer_role like $var_computer_role and coalesce(ad_site, \"None\") like $var_ad_site and coalesce(ad_dc, \"None\") like $var_ad_dc and coalesce(ad_domain, \"None\") like $var_ad_domain and coalesce(ipsubnet, \"None\") like $var_ipsubnet\nGROUP BY computer_role\nORDER BY os_boottime",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "computer_role"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "endpoint",
+          "timeColumn": "ts",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Endpoint Role",
+      "type": "piechart"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 5,
+        "x": 15,
+        "y": 24
+      },
+      "id": 16,
+      "options": {
+        "displayLabels": [],
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "values": [
+            "value"
+          ]
+        },
+        "pieType": "donut",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_SPYDR}"
+          },
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  os_boottime AS \"time\",\n  coalesce(ad_dc, \"None\") AS metric,\n  count(coalesce(ad_dc, \"None\")) as \"AD Domain\"\nFROM endpoint\nWHERE\n    $__timeFilter(os_boottime) and endpoint like $var_endpoint and os_version like $var_os_version and ps_version like $var_ps_version and computer_role like $var_computer_role and coalesce(ad_site, \"None\") like $var_ad_site and coalesce(ad_dc, \"None\") like $var_ad_dc and coalesce(ad_domain, \"None\") like $var_ad_domain and coalesce(ipsubnet, \"None\") like $var_ipsubnet\nGROUP BY ad_dc\nORDER BY os_boottime",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "computer_role"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "endpoint",
+          "timeColumn": "ts",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Domain controller",
+      "type": "piechart"
+    }
+  ],
+  "refresh": false,
+  "schemaVersion": 35,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "allValue": "'%'",
+        "current": {},
+        "datasource": {
+          "type": "mysql",
+          "uid": "${DS_SPYDR}"
+        },
+        "definition": "select distinct(endpoint) from endpoint;",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Endpoint",
+        "multi": false,
+        "name": "var_endpoint",
+        "options": [],
+        "query": "select distinct(endpoint) from endpoint;",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": "'%'",
+        "current": {},
+        "datasource": {
+          "type": "mysql",
+          "uid": "${DS_SPYDR}"
+        },
+        "definition": "select distinct(os_version) from endpoint;",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Operating System",
+        "multi": false,
+        "name": "var_os_version",
+        "options": [],
+        "query": "select distinct(os_version) from endpoint;",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": "'%'",
+        "current": {},
+        "datasource": {
+          "type": "mysql",
+          "uid": "${DS_SPYDR}"
+        },
+        "definition": "select distinct(ps_version) from endpoint;",
+        "hide": 0,
+        "includeAll": true,
+        "label": "PS Version",
+        "multi": false,
+        "name": "var_ps_version",
+        "options": [],
+        "query": "select distinct(ps_version) from endpoint;",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": "'%'",
+        "current": {},
+        "datasource": {
+          "type": "mysql",
+          "uid": "${DS_SPYDR}"
+        },
+        "definition": "select distinct(coalesce(ad_site, \"None\")) from endpoint;",
+        "hide": 0,
+        "includeAll": true,
+        "label": "AD Site",
+        "multi": false,
+        "name": "var_ad_site",
+        "options": [],
+        "query": "select distinct(coalesce(ad_site, \"None\")) from endpoint;",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": "'%'",
+        "current": {},
+        "datasource": {
+          "type": "mysql",
+          "uid": "${DS_SPYDR}"
+        },
+        "definition": "select distinct(coalesce(ad_dc, \"None\")) from endpoint ;",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Domain Controller",
+        "multi": false,
+        "name": "var_ad_dc",
+        "options": [],
+        "query": "select distinct(coalesce(ad_dc, \"None\")) from endpoint ;",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": "'%'",
+        "current": {},
+        "datasource": {
+          "type": "mysql",
+          "uid": "${DS_SPYDR}"
+        },
+        "definition": "select distinct(coalesce(ad_domain, \"None\")) from endpoint;",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Domain",
+        "multi": false,
+        "name": "var_ad_domain",
+        "options": [],
+        "query": "select distinct(coalesce(ad_domain, \"None\")) from endpoint;",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": "'%'",
+        "current": {},
+        "datasource": {
+          "type": "mysql",
+          "uid": "${DS_SPYDR}"
+        },
+        "definition": "select distinct(computer_role) from endpoint where computer_role != \"\";",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Computer Role",
+        "multi": false,
+        "name": "var_computer_role",
+        "options": [],
+        "query": "select distinct(computer_role) from endpoint where computer_role != \"\";",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": "'%'",
+        "current": {},
+        "datasource": {
+          "type": "mysql",
+          "uid": "${DS_SPYDR}"
+        },
+        "definition": "select distinct(ipsubnet) from endpoint;",
+        "hide": 0,
+        "includeAll": true,
+        "label": "IP Subnet",
+        "multi": false,
+        "name": "var_ipsubnet",
+        "options": [],
+        "query": "select distinct(ipsubnet) from endpoint;",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-25y",
+    "to": "now+24h"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Endpoint Overview",
+  "uid": "9Ix1Kaynk",
+  "version": 4,
+  "weekStart": ""
+}
