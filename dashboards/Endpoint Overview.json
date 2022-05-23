@@ -74,7 +74,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1653324460833,
+  "iteration": 1653328751840,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -464,7 +464,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  created_at as \"First Seen\",\n  ts as \"Last Seen\",\n  os_boottime as \"Last Boot\",\n  endpoint as \"Endpoint\",\n  ps_version as \"PS Version\",\n  dotnet_version as \".Net Version\",\n  os_version as \"Operation System\",\n  ipv4 as \"IP Address\",\n  ipsubnet as \"Subnet\",\n  os_language as \"OS Language\",\n  os_architecture as \"Architecture\",\n  timezone as \"UTC Offset\",\n  coalesce(ad_site, \"None\") as \"AD Site\",\n  coalesce(ad_dc, \"None\") as \"Domain Controller\",\n  coalesce(ad_domain, \"None\") as \"Domain\",\n  computer_role as \"Role\"\nfrom endpoint\nWHERE $__timeFilter(os_boottime) and endpoint like $var_endpoint and os_version like $var_os_version and ps_version like $var_ps_version and computer_role like $var_computer_role and coalesce(ad_site, \"None\") like $var_ad_site and coalesce(ad_dc, \"None\") like $var_ad_dc and coalesce(ad_domain, \"None\") like $var_ad_domain and coalesce(ipsubnet, \"None\") like $var_ipsubnet;",
+          "rawSql": "SELECT\n  created_at as \"First Seen\",\n  ts as \"Last Seen\",\n  os_boottime as \"Last Boot\",\n  endpoint as \"Endpoint\",\n  coalesce(ps_version, \"None\") as \"PS Version\",\n  coalesce(dotnet_version, \"None\") as \".Net Version\",\n  coalesce(os_version, \"None\") as \"Operation System\",\n  coalesce(ipv4, \"None\") as \"IP Address\",\n  coalesce(ipsubnet, \"None\") as \"Subnet\",\n  coalesce(os_language, \"None\") as \"OS Language\",\n  coalesce(os_architecture, \"None\") as \"Architecture\",\n  coalesce(timezone, \"None\") as \"UTC Offset\",\n  coalesce(ad_site, \"None\") as \"AD Site\",\n  coalesce(ad_dc, \"None\") as \"Domain Controller\",\n  coalesce(ad_domain, \"None\") as \"Domain\",\n  coalesce(computer_role, \"None\")  as \"Role\"\nfrom endpoint\nWHERE $__timeFilter(os_boottime) and endpoint like $var_endpoint and os_version like $var_os_version and ps_version like $var_ps_version and computer_role like $var_computer_role and coalesce(ad_site, \"None\") like $var_ad_site and coalesce(ad_dc, \"None\") like $var_ad_dc and coalesce(ad_domain, \"None\") like $var_ad_domain and coalesce(ipsubnet, \"None\") like $var_ipsubnet;",
           "refId": "A",
           "select": [
             [
@@ -1423,6 +1423,6 @@
   "timezone": "",
   "title": "Endpoint Overview",
   "uid": "9Ix1Kaynk",
-  "version": 4,
+  "version": 2,
   "weekStart": ""
 }
