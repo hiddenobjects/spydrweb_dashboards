@@ -80,7 +80,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1653325040572,
+  "iteration": 1653325399662,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -113,7 +113,7 @@
       },
       "id": 29,
       "options": {
-        "content": "<img src=\"https://static.wixstatic.com/media/134aa2_668f6b587f534c49b8202a24b300ea2a~mv2.png/v1/fill/w_146,h_115,al_c,usm_0.66_1.00_0.01,enc_auto/134aa2_668f6b587f534c49b8202a24b300ea2a~mv2.png\"/>",
+        "content": "<img src=\"https://github.com/hiddenobjects/pub/blob/main/images/hidden_objects_white.png?raw=true\"/>",
         "mode": "html"
       },
       "pluginVersion": "8.4.5",
@@ -1974,8 +1974,8 @@
     ]
   },
   "time": {
-    "from": "now-15y",
-    "to": "now"
+    "from": "now-25y",
+    "to": "now+24h"
   },
   "timepicker": {},
   "timezone": "",
